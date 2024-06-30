@@ -27,3 +27,28 @@ jobs:
 
       - name: Display softuni username
         run: echo 'sophia.b'
+
+  execute-ui-test:
+    needs: build-and-unit-test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v4
+
+      - name: Use Node.js 18.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18.x
+          cache: "npm"
+
+      - name: Install npm dependencies
+        run: npm install
+
+      - name: Install Playwright browsers
+        run: npx playwright install
+
+      - name: Start the application
+        run: npm run start &
+
+      - name: Execute the ui tests
+        run: npm run test:ui
